@@ -1,0 +1,48 @@
+#include "mbed.h"
+
+PwmOut buzzer(PC_8);
+BusIn sw(PC_10, PC_12, PC_11, PD_2);
+// DigitalIn sw1(PC_10);
+// DigitalIn sw2(PC_12);
+// DigitalIn sw3(PC_11);
+// DigitalIn sw4(PD_2);
+int main() {
+
+    
+    while(1) {
+        if(sw==8){
+            buzzer.period(1.0/2.0);
+            buzzer=0.5;
+            wait(0.5);
+            
+
+        }
+        if(sw==4){
+            buzzer.period(1.0/400.0);
+            buzzer=0.5;
+            wait(0.5);
+            
+
+        } 
+        if(sw==2){
+            buzzer.period(1.0/612.0);
+            buzzer=0.5;
+            wait(0.5);
+            
+
+
+        }
+        if(sw==1){
+
+            buzzer.period(1.0/1000.0);
+            buzzer=0.5;
+            wait(0.5);
+            
+
+        }
+        else{
+            buzzer=0.0;
+        }
+        buzzer=0.0;
+    }
+}

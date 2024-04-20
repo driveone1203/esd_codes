@@ -1,0 +1,39 @@
+#include "mbed.h"
+#include "TextLCD.h"
+
+PwmOut PWM1(PC_8);
+AnalogIn LDR1(PC_3);
+AnalogIn LDR2(PC_4);
+TextLCD lcd(PC_0,PC_1,PB_0,PA_4,PA_1,PA_0);
+
+int main() {
+    while(1){
+        // Read light values from LDRs
+        float ldr1_value = LDR1.read();
+        float ldr2_value = LDR2.read();
+        
+        // Display LDR values on LCD
+        lcd.cls();
+        lcd.locate(0,0);
+        lcd.printf("LDR1: %.2f", ldr1_value);
+        lcd.locate(0,1);
+        lcd.printf("LDR2: %.2f", ldr2_value);
+        
+        // Adjust servo motor position based on LDR values
+        if (ldr1_value > ldr2_value) {
+            PWM1.pulsewidth_us(1000); // Rotate servo to one side
+            lcd.locate(0,2);
+            lcd.printf("RR%d", 1000);
+        } else if (ldr2_value > ldr1_value) {
+            PWM1.pulsewidth_us(2000); // Rotate servo to the other side
+            lcd.locate(0,2);
+            lcd.printf("RL%d", 2000);
+        } else {
+            PWM1.pulsewidth_us(1500); 
+            lcd.locate(0,2);
+            lcd.printf("M %d", 1500);
+        }
+        
+        wait(0.1); // Wait for 100ms before next adjustment
+    }
+}

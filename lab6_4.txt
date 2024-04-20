@@ -1,0 +1,49 @@
+#include "mbed.h"
+#include "TextLCD.h"
+TextLCD lcd(PC_0,PC_1,PB_0,PA_4,PA_1,PA_0);
+PwmOut Motor(PC_8);
+AnalogIn Ain2(PC_3);
+AnalogIn Ain1(PC_2);
+
+
+int main() {
+    Motor.period(0.02);
+        Motor.pulsewidth_us(1500);
+    while(1){
+        Motor.period(0.02);
+        
+        wait(1);
+        int a,b;
+        a=Ain1*100;
+        b=Ain2*100;
+
+        
+        if(a>b && a>75){
+            Motor.pulsewidth_us(2500);
+            lcd.locate(3,0);
+            lcd.printf("Rotate Left");
+        }
+        else if(a>b && a>45 && a<75){
+            Motor.pulsewidth_us(2000);
+            lcd.locate(3,0);
+            lcd.printf("Rotate Left");
+        }
+        else if(b>a && b>75){
+            Motor.pulsewidth_us(500);
+            lcd.locate(3,0);
+            lcd.printf("Rotate Right");
+        }
+        else if(b>a && b>45 && b<75){
+            Motor.pulsewidth_us(1000);
+            lcd.locate(3,0);
+            lcd.printf("Rotate Right");
+        }
+        else{
+            Motor.pulsewidth_us(1500);
+            lcd.locate(3,0);
+            lcd.printf("No Rotate");
+        }
+
+        wait(3);        
+    }
+}

@@ -1,0 +1,60 @@
+#include "mbed.h"
+#include "TextLCD.h"
+#include "Servo.h"
+ 
+TextLCD lcd(PC_0, PC_1, PB_0, PA_4, PA_1, PA_0);
+DigitalOut trigger(PC_8);
+DigitalIn echo(PC_6);
+DigitalOut buzzer(PC_10);
+Servo gateServo(PC_5);
+Timer sonar;
+ 
+int availableSlots = 4;
+ 
+ int measureDistance() {
+    trigger = 1;
+     wait_us(1);
+     trigger = 0;
+ 
+     while (echo == 0);
+ 
+     sonar.reset();
+     sonar.start();
+     while (echo == 1);
+     sonar.stop();
+ 
+     return (sonar.read_us()) / 58.0;
+ }
+ void openGate() {
+     gateServo.write(0.9); // Open the gate to 90 degrees
+     wait(10.0);           // Wait for 10 seconds
+    gateServo.write(0.0); // Close the gate
+ }
+ 
+ int main() {
+     lcd.cls();
+     lcd.locate(5, 0);
+     lcd.printf("Smart Parking");
+ 
+     while (1) {
+         int distance = measureDistance();
+ 
+         lcd.locate(0, 1);
+         lcd.printf("Avail. slot: %02d", availableSlots);
+ 
+         wait(0.2);
+ 
+         if (distance < 15 && availableSlots == 0) {
+            buzzer = 1;
+             lcd.locate(0, 1);
+             lcd.printf("No Parking slot");
+             wait(5.0); // Buzzer sounds for 5 seconds
+             buzzer = 0;
+       
+         } else if (distance <= 15 && availableSlots > 0) {
+             buzzer = 1;
+             openGate();
+             availableSlots--;
+         }
+     }
+ }
