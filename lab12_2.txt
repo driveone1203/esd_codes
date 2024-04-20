@@ -1,0 +1,44 @@
+#include "mbed.h"
+
+BusOut display(PA_10, PB_3, PB_5, PB_4, PB_10, PA_8, PA_9, PC_7);
+DigitalOut Digit0(PC_11);
+DigitalOut Digit1(PC_10);
+DigitalIn SW(PC_12);
+Timer display_delay;
+
+int i=0, j=0;
+int displayBuf0 = 0;
+int displayBuf1 = 0;
+int segCode[10] = {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};
+
+void display_func(int displayBuf1, int displayBuf0) {
+    Digit0 = 1;
+    Digit1 = 0;
+    display = segCode[displayBuf0];
+    wait(0.002);
+    Digit0 = 0;
+    Digit1 = 1;
+    display = segCode[displayBuf1];
+    wait(0.002);
+}
+
+int main() {
+    display_delay.start();
+    while (1) {
+        if (SW == 1) {
+            if (display_delay.read() >= 1) {
+                if (++i > 9) {
+                    i = 0;
+                    if (++j > 9) {
+                        j = 0;
+                    }
+                }
+                displayBuf0 = i;
+                displayBuf1 = j;
+            }
+        }
+        else {
+            display_func(displayBuf0, displayBuf1);
+        }
+    }
+}

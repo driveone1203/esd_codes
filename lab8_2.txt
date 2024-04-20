@@ -1,0 +1,51 @@
+// Master
+#include "mbed.h"
+SPI ser_port(PB_15, PB_14, PB_13);
+DigitalOut led(PC_8);
+DigitalIn switch_ip(PC_4);
+DigitalOut cs(PB_12);
+char switch_word;
+char recd_val;
+int main()
+{
+    while (1)
+    {
+        switch_word = 0xa0;
+        if (switch_ip == 1)
+            switch_word = switch_word | 0x01;
+        CS = 0;
+        recd_val = ser_port.write(switch_word);
+        cs = 1;
+        wait(0.01);
+        led = 0;
+        recd_val = recd_val & 0x01;
+        if (recd_val == 1)
+            led = 1;
+    }
+}
+
+// Slave
+#include "mbed.h"
+SPISlave ser_port(PB_15, PB_14, PB_13, PB_12);
+Digitalout led(PC_8);
+DigitalIn switch_ip(PC_4);
+char switch_word;
+char recd_val;
+int main()
+{
+    while (1)
+    {
+        switch_word = 0xa0;
+        if (switch_ip == 1)
+            switch_word = switch_word | 0x01;
+        if (ser_port.receive())
+        {
+            recd_val = ser_port.read();
+            ser_port.reply(switch_word);
+        }
+        led = 0;
+        recd_va = recd_val & 0x01;
+        if (recd_val == 1)
+            led = 1;
+    }
+}

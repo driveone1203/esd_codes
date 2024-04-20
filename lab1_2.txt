@@ -1,0 +1,21 @@
+// Blinking of LEDs alternatively in pairs
+
+#include "mbed.h"
+DigitalOut myLed1(PC_4);
+DigitalOut myLed2(PB_13);
+DigitalOut myLed3(PB_14);
+DigitalOut myLed4(PB_15);
+int main() {
+    while(1) {
+        myLed1 = 1;
+        myLed2 = 0;
+        myLed3 = 1;
+        myLed4 = 0;
+        wait(0.2);
+        myLed1 = 0;
+        myLed2 = 1;
+        myLed3 = 0;
+        myLed4 = 1;
+        wait(0.2);
+    }
+}

@@ -1,0 +1,21 @@
+// receive a character (M) from PC via host terminal application (Tera term) & switch ON the on-board LED1.
+
+#include "mbed.h"
+
+Serial pc(USBTX, USBRX);
+DigitalOut myLed(LED1);
+
+int main() {
+    printf("Press a character: ");
+    while (1) {
+        int y = pc.getc();
+        printf("%c\n", y);
+        if (y == 'm') {
+            myLed = 1;
+            wait(0.2);
+        }
+        else {
+            myLed = 0;
+        }
+    }
+}

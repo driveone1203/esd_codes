@@ -1,0 +1,29 @@
+#include "mbed.h"
+#include "rtos.h"
+
+DigitalOut led1(PC_10);
+DigitalOut led2(PC_11);
+Thread Thread1, Thread2;
+
+void led1_thread() {
+	while (1) {
+		led1 = !led1;
+		Thread::wait(1000);
+	}
+}
+
+void led2_thread() {
+	while (1) {
+		led2 = !led2;
+		Thread::wait(500);
+	}
+}
+
+
+int main() {
+	Thread1.start(led1_thread);   
+	Thread2.start(led2_thread);
+	Thread::wait(10000);
+	Thread1.terminate();
+	While (1);
+}

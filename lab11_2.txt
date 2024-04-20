@@ -1,0 +1,50 @@
+#include "mbed.h"
+#include "keypad.h"
+#include "TextLCD.h"
+
+TextLCD lcd(PC_0,PC_1,PB_0,PA_4,PA_1,PA_0);
+Keypad keypad(PA_10,PB_3,PB_5,PB_4,PB_10,PA_8,PA_9,PC_7);
+DigitalOut buzzer(PC_6);
+PwmOut servo(PC_8);
+const char passkey[4] = {'1','2','3','4'};
+char pass[4];
+int count;
+
+int main(){
+    keypad.enablePullUp();
+    while(1){
+        lcd.cls();
+        lcd.locate(0,0);
+        lcd.printf(" Enter Password : ");
+        servo.period_ms(20);
+        servo.pulsewidth_us(500);
+        buzzer=0;
+        for(count=0; count<4; count++){
+            while(keypad.getKey() == '\0');
+            pass[count] = keypad.getKey();
+            {
+                lcd.locate(count,1);
+                lcd.printf("*");
+                wait(1);
+            }
+        }
+        if((passkey[0] == pass[0]) && (passkey[1] == pass[1]) && (passkey[2] == pass[2]) && (passkey[3] == pass[3])){
+            lcd.cls();
+            lcd.locate(0,0);
+            lcd.printf("Correct Password");
+            lcd.locate(0,1);
+            lcd.printf("Door Opening");
+            servo.period_ms(20);
+            servo.pulsewidth_us(1500);
+            wait(3);
+        } else {
+            lcd.cls();
+            lcd.locate(0,0);
+            lcd.printf("Incorrect Password");
+            lcd.locate(0,1);
+            lcd.printf("Door Can't Openn");
+            buzzer=1;
+            wait(3);
+        }
+    }
+}

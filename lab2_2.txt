@@ -1,0 +1,26 @@
+// To blink one LED at a time serially in a group of 4 LEDs based on switch’s value.
+
+#include "mbed.h"
+BusOut myled(PC_4, PB_13, PB_14, PB_15);
+DigitalIn switch1(PC_10);
+int main() {
+    while (1) {
+        if (switch1 == 1) {
+            myled = 8;
+            wait(0.5);
+            myled = 4;
+            wait(0.5);
+            myled = 2;
+            wait(0.5);
+            myled = 1;
+            wait(0.5);
+        } else {
+            myled = 1;
+            wait(0.5);
+            myled = 2;
+            wait(0.5);
+            myled = 4;
+            wait(0.5);
+            myled = 8;
+            wait(0.5);
+        } } }

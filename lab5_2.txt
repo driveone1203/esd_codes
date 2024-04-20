@@ -1,0 +1,33 @@
+/*
+1. Write a program to display a continuous count variable value on the LCD display on row-1 5th position. Assume LCD operates in 4-bit with EN and RS active state. Design and verify this logic on Nucleo 152RE board using online Keil Studio platform.
+2. Write a program to accepts serial input character via Teraterm software from a host computer and displays it on the LCD. Assume LCD operates in 4-bit with EN and RS active state. 
+*/
+
+#include "mbed.h"
+#include "TextLCD.h"
+TextLCD lcd(PC_0,PC_1,PB_0,PA_4, PA_1, PA_0); // rs, e, d4-d7
+int main()
+{
+int a=0;
+lcd.cls();
+while (1) {
+lcd.locate(5, 1);
+lcd.printf("%d", a);
+wait(1);
+a++;
+}
+}
+
+
+#include "mbed.h"
+#include "TextLCD.h" 
+TextLCD lcd(PC_0,PC_1,PB_0,PA_4,PA_1,PA_0); 
+Serial pc(USBTX,USBRX); 
+int main() 
+{ 
+lcd.cls(); 
+while(1) { 
+char in = pc.getc();
+lcd.printf("%c",in); 
+} 
+}

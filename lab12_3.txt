@@ -1,0 +1,21 @@
+#include "mbed.h"
+#include "KeypadLib/keypad.h"
+
+Keypad keypad(PC_5, PC_6, PC_8, PC_9, PB_11, PB_12, PA_11, PA_12);
+BusOut display(PA_10, PB_3, PB_5, PB_4, PB_10, PA_8, PA_9, PC_7);
+
+char key;
+int displayBuf = 0;
+int segCode[10] = {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};
+
+int main() {
+    keypad.enablePullUp();
+
+    while (1) {
+        while (keypad.getKey() == '\0');
+        key = keypad.getKey();
+        displayBuf = key - 48;
+        display = segCode[displayBuf];
+        wait(1);
+    }
+}

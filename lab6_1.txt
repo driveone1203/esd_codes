@@ -1,0 +1,18 @@
+/*
+Write a program to control the servo motor by rotating slowly from 0 degrees to 180 degrees, 45 degrees at a time. When the motor has to be rotated 180 degrees, it will  return to the initial position. Implement and verify this logic on STM32 board.
+*/
+
+#include "mbed.h"
+
+PwmOut PWM1(PC_8);
+float i;
+
+int main() {
+    while(1) {
+        PWM1.period_ms(20);
+        for (i=0; i<3; i+=0.1) {
+            PWM1 = i/20;
+            wait_ms(500);
+        }
+    }
+}

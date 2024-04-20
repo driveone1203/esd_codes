@@ -1,0 +1,36 @@
+// Master
+#include "mbed.h"
+Serial PC(USBTX, USBRX);
+I2C i2c(PB_11, PB_10);
+int main() {
+  int address = 0xA0;
+  char data[20];
+    PC.printf("enter data to send");
+    PC.scanf("%s", data);
+    PC.printf("%s", data);
+    int len = strlen(data);
+    i2c.write(address, data, len);
+}
+
+// Slave
+#include "mbed.h"
+Serial pc(USBTX, USBRX);
+I2CSlave slave(PB_11, PB_10);
+int main() {
+  char buf[20];
+  char msg[] = "Slave!";
+  slave.address(0xA0);
+  while (1) {
+    int i = slave.receive();
+    switch (i) {
+    case I2CSlave::ReadAddressed:
+      slave.write(msg, strlen(msg) + 1);
+      break;
+    case I2CSlave::WriteGeneral:
+      slave.read(buf, 20);
+      pc.printf("Read1: %s\r\n", buf);
+    case I2CSlave::WriteAddressed:
+      slave.read(buf, 20);
+      pc.printf("Read2: %s\r\n", buf);
+      wait(2);
+      break;}}}

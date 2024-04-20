@@ -1,0 +1,10 @@
+// control the brightness of the LED 
+
+#include "mbed.h"
+PwnOut led(PC_8);
+
+int main() {
+    led.period(2.0f);
+    led.write(0.75f);
+    while(1);
+}

@@ -1,0 +1,24 @@
+#include "mbed.h"
+#include "KeypadLib/keypad.h"
+#include "TextLCD/TextLCD.h"
+
+
+Serial pc(USBTX, USBRX);
+TextLCD lcd(PC_0, PC_1, PB_0, PA_4, PA_1, PA_0);
+//             c1     c2    c3   c4(x)  r1     r2     r3    r4
+Keypad keypad(PA_10, PB_3, PB_5, PB_4, PB_10, PA_8, PA_9, PC_7);
+char key;
+
+int main() {
+    keypad.enablePullUp();
+    lcd.printf("Pressed key=");
+    pc.printf("Pressed key=\n\r");   
+    while(1) {
+        while (keypad.getKey() == '\0');
+        key = keypad.getKey();
+        lcd.locate(12, 0);
+        lcd.printf("%c", key);
+        pc.printf("%c\r\n", key);
+        wait(1);
+    }
+}

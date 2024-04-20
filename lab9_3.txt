@@ -1,0 +1,23 @@
+// Challenging Task
+
+#include "mbed.h"
+Serial pc(USBTX, USBRX);
+Serial bt(PC_10, PC_11);
+AnalogIn ain(PC_3);
+DigitalOut buzz(PC_8);
+int main() {
+  char ch;
+  pc.baud(9600);
+  bt.baud(9600);
+  while (1) {
+    float temp = ain * 5;
+    bt.printf("%.2f\n", temp);
+    if (temp > 3.2) {
+        buzz = 1;
+    }
+    else {
+        buzz = 0;
+    }
+    wait(2.5);
+  }
+}

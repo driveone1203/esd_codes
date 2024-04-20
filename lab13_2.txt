@@ -1,0 +1,33 @@
+#include "mbed.h"
+#include "rtos.h"
+Serial PC(USBTX, USBRX);
+Thread Thread1, Thread2;
+Semaphore sem_count(1);
+Mutex mutex1;
+int i = 10;
+
+void count(int i) {
+    // mutex1.lock();
+    // sem_count.wait();
+    PC.printf("Count values before delay: %d\n\r", i);
+    Thread::wait(1000);
+    PC.printf("Count value after delay : %d\n\r", i);
+    // mutex1.unlock();
+    // sem_count.release();
+}
+
+void increment() {
+    i += 1;
+    count(i);
+}
+
+void decrement() {
+    i -=1 ;
+    count(i);
+}
+
+int main() {
+    Thread1.start(increment);
+    Thread2.start(decrement);
+    Thread1.join();
+    Thread2.join();}

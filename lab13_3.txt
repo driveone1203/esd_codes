@@ -1,0 +1,21 @@
+#include "mbed.h"
+#include "rtos.h"
+DigitalOut LED(PC_11);
+DigitalOut SW(PC_10);
+Thread Thread1;
+void Flash()
+{
+Thread::signal_wait(0x1);
+while(1)
+{
+LED=!LED;
+Thread::wait(1000);
+}
+}
+int main()
+{
+Thread1.start(Flash);
+while(SW==0);
+Thread1.signal_set(0x1);
+while(1);
+}
