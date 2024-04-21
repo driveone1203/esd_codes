@@ -1,0 +1,19 @@
+PC10 (UART4_TX)   PC11 (UART4_RX)         PC9 (Serial1_RX)         PC8 (Serial1_TX)
+PC12 (Serial2_RX) PD2 (Serial2_TX)        PB8 (Serial3_RX)         PC6 (Serial3_TX)
+VDD               E5V                     PB9 (I2C1_SDA)           PC5 (I2C1_SCL)
+BOOT0             GND                     AVDD                     U5V
+NC                NC                      GND                      NC
+NC                IOREF                   PA5 (SPI1_SCK)           PA12 (SPI1_NSS)
+PA13 (SWDIO)      RESET                   PA6 (SPI1_MISO)          PA11 (SPI1_MOSI)
+PA14              +3V3                    PA7                      PB12 (UART5_TX)
+PA15              +5V                     PB6                      PB11 (UART5_RX)
+GND               GND                     PC7                      GND
+PB7               GND                     PA9 (USART1_TX)          PB2 (USART1_RX)
+PC13 (SWDCLK)     VIN                     PA8 (USART1_CK)          PB1 (USART1_CTS)
+PC14              NC                      PB10 (USART3_TX)         PB15 (USART3_RX)
+PC15              PA0                     PB4 (USART3_CK)          PB14 (USART3_CTS)
+PH0               PA1                     PB5                      PB13 (USART3_RTS)
+PH1               PA4                     PB3 (USART2_TX)          AGND
+VLCD              PB0                     PA10 (USART2_RX)         PC4
+PC2 (ADC)         PC1                     PA2 (USART2_CK)          NC
+PC3 (ADC)         PC0                     PA13 (SWDIO)             NC
